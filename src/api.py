@@ -14,7 +14,7 @@ class HydrusApi:
         self.access_key = access_key
 
     def request_permissions(self, basic_permissions):
-        url = f"{self.host}/request_new_permissions?name=sd-hydrus-tagger?name={quote(constants.APP_NAME)}&basic_permissions={json.dumps(basic_permissions)}"
+        url = f"{self.host}/request_new_permissions?name={quote(constants.APP_NAME)}&basic_permissions={json.dumps(basic_permissions)}"
         return self.get(url)
 
     def get_image(self, file_id):
