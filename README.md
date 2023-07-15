@@ -1,5 +1,15 @@
 # sd-hydrus-tagger
-Tag hydrus images with embedded Stable Diffusion metadata
+Tag hydrus images with embedded Stable Diffusion metadata. 
+
+Uses the hydrus client api to scan comfyui metadata for:
+
+- ckpt_name
+- vae_name
+- lora_name
+- sample_namer
+- text
+
+And adds these as tags against the image, for example: `sd:checkpoint:revAnimated.safetensors`
 
 ## Install
 
