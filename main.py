@@ -9,7 +9,7 @@ host = args.host
 command = args.command
 
 if command == "request-permissions":
-    api = HydrusApi(host, "", "")
+    api = HydrusApi(host, "")
     result = api.request_permissions([2, 3])
     print(result)
 
