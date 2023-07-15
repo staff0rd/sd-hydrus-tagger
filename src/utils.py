@@ -23,7 +23,7 @@ def get_comfyui_tags(image):
             ("ckpt_name", "checkpoint"),
             ("vae_name", "vae"),
             ("lora_name", "lora"),
-            ("sample_namer", "sampler"),
+            ("sampler_name", "sampler"),
             ("text", "prompt"),
         ]
 
