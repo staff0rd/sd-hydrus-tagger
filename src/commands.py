@@ -29,5 +29,11 @@ def get_command():
         help="force reprocessing of images that have already been processed",
         action=argparse.BooleanOptionalAction,
     )
+    parser_process_images.add_argument(
+        "-t",
+        "--extra-tags",
+        nargs="+",
+        help="only process images with these tags",
+    )
 
     return (parser.parse_args(), parser)

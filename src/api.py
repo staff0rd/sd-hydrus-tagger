@@ -46,8 +46,11 @@ class HydrusApi:
         if result.status_code != 200:
             raise Exception(f"{url} request failed: {result.text}")
 
-    def get_files_to_process(self, extra_tags=[], force=False):
-        tags_to_process = ["system:has human-readable embedded metadata", *extra_tags]
+    def get_files_to_process(self, extra_tags, force=False):
+        tags = []
+        if extra_tags is not None:
+            tags = extra_tags
+        tags_to_process = ["system:has human-readable embedded metadata", *tags]
         if not force:
             tags_to_process.append(constants.PENDING_TAG)
         url = f"{self.host}/get_files/search_files?tags={quote(json.dumps(tags_to_process))}"

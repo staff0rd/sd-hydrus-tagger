@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args" : ["process-images", "-k", "1156273ab92327e56645bc0fd6147363b9a68a88ca45aeed5457f755af57cdef", "-f"]
+            "args" : ["process-images", "-k", "1156273ab92327e56645bc0fd6147363b9a68a88ca45aeed5457f755af57cdef", "-f", "-t", "comfyui", "hello"]
         }
     ]
 }

@@ -15,7 +15,7 @@ if command == "request-permissions":
 
 elif command == "process-images":
     api = HydrusApi(host, args.access_key)
-    file_ids = api.get_files_to_process(extra_tags=["comfyui"], force=args.force)
+    file_ids = api.get_files_to_process(args.extra_tags, force=args.force)
     service_key = api.get_tag_service_key()
     if service_key is None:
         raise Exception("No tag service found")
