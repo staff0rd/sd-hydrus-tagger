@@ -1,7 +1,5 @@
 import json
 
-from loguru import logger
-
 
 def find_json_value(json_input, lookup_key):
     if isinstance(json_input, dict):
@@ -36,7 +34,7 @@ def get_comfyui_tags(image):
                 else:
                     name = key[0]
 
-                tags.append(f"{name}: {value}")
+                tags.append(f"sd:{name}:{value}")
 
         tags = set(tags)
     return tags

@@ -2,15 +2,20 @@ import json
 from urllib.parse import quote
 
 import requests
-from loguru import logger
 from PIL import Image
 
+from . import constants
 
+
+# https://hydrusnetwork.github.io/hydrus/developer_api.html
 class HydrusApi:
-    def __init__(self, host, access_key, pending_tag):
+    def __init__(self, host, access_key):
         self.host = host
         self.access_key = access_key
-        self.pending_tag = pending_tag
+
+    def request_permissions(self, basic_permissions):
+        url = f"{self.host}/request_new_permissions?name=sd-hydrus-tagger?name={quote(constants.APP_NAME)}&basic_permissions={json.dumps(basic_permissions)}"
+        return self.get(url)
 
     def get_image(self, file_id):
         url = f"{self.host}/get_files/file?file_id={file_id}"
@@ -41,11 +46,11 @@ class HydrusApi:
         if result.status_code != 200:
             raise Exception(f"{url} request failed: {result.text}")
 
-    def get_files_to_process(self, extra_tags=[]):
-        tags = quote(
-            json.dumps(["system:has human-readable embedded metadata", *extra_tags])
-        )
-        url = f"{self.host}/get_files/search_files?tags={tags}"
+    def get_files_to_process(self, extra_tags=[], force=False):
+        tags_to_process = ["system:has human-readable embedded metadata", *extra_tags]
+        if not force:
+            tags_to_process.append(constants.PENDING_TAG)
+        url = f"{self.host}/get_files/search_files?tags={quote(json.dumps(tags_to_process))}"
         return self.get(url)["file_ids"]
 
     def get_tag_service_key(self, tag_service_name="my tags"):
@@ -61,8 +66,8 @@ class HydrusApi:
             "file_id": file_id,
             "service_keys_to_actions_to_tags": {
                 f"{service_key}": {
-                    "0": [*tags, "processed-by-tag-editor"],
-                    "1": self.pending_tag,
+                    "0": [*tags, constants.ALL_TAG, constants.PROCESSED_TAG],
+                    "1": [constants.PENDING_TAG],
                 }
             },
         }

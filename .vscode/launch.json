@@ -5,12 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Python: main.py",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal",
-            "justMyCode": true
+            "justMyCode": true,
+            "args" : ["process-images", "-k", "1156273ab92327e56645bc0fd6147363b9a68a88ca45aeed5457f755af57cdef", "-f"]
         }
     ]
 }

@@ -1,34 +1,39 @@
-import argparse
-
-from loguru import logger
 from tqdm import tqdm
 
 from src.api import HydrusApi
+from src.commands import get_command
 from src.utils import get_comfyui_tags
 
-parser = argparse.ArgumentParser(
-    description="Apply stable diffusion tags to images in Hydrus"
-)
-parser.add_argument("command")
-parser.add_argument("-h", "--host", default="http://localhost:45869")
-parser.add_argument("-k", "--access-key", required=True)
-args = parser.parse_args()
+args, parser = get_command()
 host = args.host
-access_key = args.access_key
+command = args.command
 
-api = HydrusApi(host, access_key, "pending-auto-tagger")
-file_ids = api.get_files_to_process(extra_tags=["comfyui"])
-service_key = api.get_tag_service_key()
-if service_key is None:
-    raise Exception("No tag service found")
+if command == "request-permissions":
+    api = HydrusApi(host, "", "")
+    result = api.request_permissions([2, 3])
+    print(result)
 
-logger.info(f"Found {len(file_ids)} images to process")
+elif command == "process-images":
+    api = HydrusApi(host, args.access_key)
+    file_ids = api.get_files_to_process(extra_tags=["comfyui"], force=args.force)
+    service_key = api.get_tag_service_key()
+    if service_key is None:
+        raise Exception("No tag service found")
 
-print("Processing images...")
+    image_count = len(file_ids)
+    print(f"Found {image_count} images to process")
 
-for file_id in tqdm(file_ids):
-    image = api.get_image(file_id)
-    tags = get_comfyui_tags(image)
-    api.add_tags(file_id, service_key, tags)
+    if image_count > 0:
+        print("Processing images...")
 
-print("Done!")
+        for file_id in tqdm(file_ids):
+            image = api.get_image(file_id)
+            tags = get_comfyui_tags(image)
+            api.add_tags(file_id, service_key, tags)
+
+    print("Done!")
+
+else:
+    print(f"Unknown command: {command}")
+    parser.print_help()
+    exit(1)
