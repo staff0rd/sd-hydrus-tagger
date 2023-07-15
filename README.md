@@ -26,3 +26,9 @@ python main.py request-permissions # only needed once, accept the permissions in
 python main.py process -k <access key from above> process-images
 ```
 
+## Help
+
+```shell
+python main.py --help
+python main.py process-images --help
+```
