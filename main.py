@@ -1,11 +1,20 @@
+import argparse
+
 from loguru import logger
 from tqdm import tqdm
 
 from src.api import HydrusApi
 from src.utils import get_comfyui_tags
 
-host = "http://192.168.2.7:45869"
-access_key = "a0f7783ba9e550d5f2ef02478a56ef3f27ef0c1d3ebb28aa35038e371f5884ae"
+parser = argparse.ArgumentParser(
+    description="Apply stable diffusion tags to images in Hydrus"
+)
+parser.add_argument("command")
+parser.add_argument("-h", "--host", default="http://localhost:45869")
+parser.add_argument("-k", "--access-key", required=True)
+args = parser.parse_args()
+host = args.host
+access_key = args.access_key
 
 api = HydrusApi(host, access_key, "pending-auto-tagger")
 file_ids = api.get_files_to_process(extra_tags=["comfyui"])
